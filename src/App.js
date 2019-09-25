@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
-import uuidv4 from 'uuid';
+import React, { useEffect, useState } from 'react';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
+import io from 'socket.io-client';
+require('dotenv').config();
+
+const port = process.env.REACT_APP_SERVER_PORT;
+const socket = io(`http://localhost:${port}`);
 
 function App() {
-  // TODO: GET messages
-  const [messages, setMessages] = useState([
-    { id: uuidv4(), message: 'yo' },
-    { id: uuidv4(), message: 'hi' },
-    { id: uuidv4(), message: 'sup' },
-  ]);
+  const [messages, setMessages] = useState([]);
 
-  // TODO: POST messages
+  useEffect(() => {
+    socket
+      .emit('app:load', messageData => {
+        setMessages(messages => [...messages, ...messageData]);
+      })
+      .on('message:new', newMessage => {
+        setMessages(messages => [...messages, newMessage]);
+      });
+  }, []);
+
   const postMessage = input => {
-    setMessages([...messages, { id: uuidv4(), message: input }]);
+    socket.emit('message:post', input);
   };
 
   return (
