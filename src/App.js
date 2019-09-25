@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
 import io from 'socket.io-client';
-require('dotenv').config();
+import 'dotenv/config';
 
 const port = process.env.REACT_APP_SERVER_PORT;
 const socket = io(`http://localhost:${port}`);

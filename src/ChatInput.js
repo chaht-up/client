@@ -14,6 +14,7 @@ export default function ChatInput({ postMessage }) {
   return (
     <form onSubmit={sendMessage}>
       <input
+        aria-label="chat-input"
         onChange={event => setInput(event.target.value)}
         placeholder="Message"
         value={input}
