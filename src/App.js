@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import ChatInput from './ChatInput';
-import Messages from './Messages';
 import io from 'socket.io-client';
 import 'dotenv/config';
-
-const port = process.env.REACT_APP_SERVER_PORT;
-const socket = io(`http://localhost:${port}`);
+import ChatInput from './ChatInput';
+import Messages from './Messages';
 
 function App() {
   const [messages, setMessages] = useState([]);
+
+  const port = process.env.REACT_APP_SERVER_PORT;
+  const socket = io(`http://localhost:${port}`);
 
   useEffect(() => {
     socket

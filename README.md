@@ -47,7 +47,7 @@ $ git clone git@github.com:chaht-up/client.git
 Install dependencies:
 
 ```sh
-$ npm install
+$ yarn
 ```
 
 ## Start
@@ -55,7 +55,7 @@ $ npm install
 Start the development server at [http://localhost:3000](http://localhost:3000) (implicitly rebuilds on code changes):
 
 ```sh
-$ npm start
+$ yarn start
 ```
 
 ## Test
@@ -65,7 +65,7 @@ $ npm start
 Run unit tests (implicitly re-runs on code changes):
 
 ```sh
-$ npm test
+$ yarn test
 ```
 
 ## Release
@@ -75,5 +75,5 @@ $ npm test
 Generate a production release in the `build` directory:
 
 ```sh
-$ npm run build
+$ yarn build
 ```

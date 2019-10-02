@@ -1,7 +1,7 @@
-import uuidv4 from 'uuid';
+import faker from 'faker';
 
 it('should send message', () => {
-  const message = uuidv4();
+  const message = faker.lorem.sentence(2);
 
   cy.visit('http://localhost:3000')
     .findByLabelText('chat-input')
