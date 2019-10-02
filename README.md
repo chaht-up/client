@@ -10,12 +10,16 @@ Web app for chatting
 
 ### App
 
+- [formik](https://github.com/jaredpalmer/formik) - React form handler
+- [reach router](https://reach.tech/router) - Routing for React
 - [react](https://facebook.github.io/react/) - View layer
 - [socket.io](https://github.com/socketio/socket.io) - Client side realtime library
-- [uuid](https://github.com/kelektiv/node-uuid) - RFC-compliant UUID generator
+- [use-axios-client](https://github.com/angelle-sw/use-axios-client) - Axios hooks wrapper
+- [yup](https://github.com/jquense/yup) - Object schema validation
 
 ### Dev Tooling
 
+- [cypress](https://github.com/cypress-io/cypress) - e2e browser testing suite
 - [eslint](https://eslint.org/) - JS linter
 
 ### Build Tooling
@@ -34,7 +38,7 @@ Web app for chatting
 
 ### API
 
-- TODO
+- https://github.com/chaht-up/server
 
 ## Setup
 
