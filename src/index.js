@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from '@reach/router';
-import App from './components/App';
-import Login from './components/Login';
-import Register from './components/Register';
+import { App, Login, NotFound, Register } from './components';
 
 ReactDOM.render(
   <Router>
-    <App exact path="/" />
+    <App path="/" />
     <Login path="/login" />
     <Register path="/register" />
+    <NotFound default />
   </Router>,
   document.getElementById('root'),
 );

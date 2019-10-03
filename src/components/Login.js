@@ -7,7 +7,7 @@ import { loginSchema } from '../schemas';
 export default function Login() {
   const [getData, { data }] = useLazyAxios({
     method: 'POST',
-    url: '/login',
+    url: '/api/login',
   });
 
   const { handleChange, handleSubmit, values } = useFormik({
@@ -21,7 +21,7 @@ export default function Login() {
   });
 
   useEffect(() => {
-    if (data && data.success) {
+    if (data) {
       navigate('/');
     }
   }, [data]);
@@ -44,6 +44,7 @@ export default function Login() {
           <input
             name="password"
             id="password"
+            type="password"
             onChange={handleChange}
             value={values.password}
           />
