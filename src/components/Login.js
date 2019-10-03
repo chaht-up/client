@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useLazyAxios } from 'use-axios-client';
 import { navigate } from '@reach/router';
-import { registerSchema } from './schemas';
+import { loginSchema } from '../schemas';
 
-export default function Register() {
+export default function Login() {
   const [getData, { data }] = useLazyAxios({
     method: 'POST',
-    url: '/register',
+    url: '/login',
   });
 
   const { handleChange, handleSubmit, values } = useFormik({
@@ -17,7 +17,7 @@ export default function Register() {
     },
 
     onSubmit: () => getData(values),
-    validationSchema: registerSchema,
+    validationSchema: loginSchema,
   });
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Register() {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">
           Username:
@@ -49,8 +49,8 @@ export default function Register() {
           />
         </label>
         <button type="submit">Submit</button>
-        <button type="submit" onClick={() => navigate('/login')}>
-          Login
+        <button type="submit" onClick={() => navigate('/register')}>
+          Register
         </button>
       </form>
     </div>
