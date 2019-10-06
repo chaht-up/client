@@ -5,7 +5,7 @@ import { navigate } from '@reach/router';
 import { loginSchema } from '../schemas';
 
 export default function Login() {
-  const [getData, { data }] = useLazyAxios({
+  const [getData, { data, error, loading }] = useLazyAxios({
     method: 'POST',
     url: '/api/login',
   });
@@ -25,6 +25,14 @@ export default function Login() {
       navigate('/');
     }
   }, [data]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error...{error.message}</div>;
+  }
 
   return (
     <div>
