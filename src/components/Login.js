@@ -8,6 +8,7 @@ export default function Login() {
   const [getData, { data, error, loading }] = useLazyAxios({
     method: 'POST',
     url: '/api/login',
+    headers: { 'content-type': 'application/json' },
   });
 
   const { handleChange, handleSubmit, values } = useFormik({
@@ -27,11 +28,11 @@ export default function Login() {
   }, [data]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div data-testid="loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error...{error.message}</div>;
+    return <div data-testid="error">Error...{error.message}</div>;
   }
 
   return (

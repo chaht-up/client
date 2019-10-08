@@ -6,18 +6,19 @@ import Messages from './Messages';
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState({});
 
   const port = process.env.REACT_APP_SERVER_PORT;
   const socket = io(`http://localhost:${port}`);
 
   useEffect(() => {
-    socket
-      .emit('app:load', messageData => {
-        setMessages(messages => [...messages, ...messageData]);
-      })
-      .on('message:new', newMessage => {
-        setMessages(messages => [...messages, newMessage]);
-      });
+    socket.emit('app:load', ({ messages: messageData, users: userData }) => {
+      setMessages(messages => [...messages, ...messageData]);
+      setUser(userData);
+    });
+    socket.on('message:new', newMessage => {
+      setMessages(messages => [...messages, newMessage]);
+    });
   }, []);
 
   const postMessage = input => {

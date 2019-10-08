@@ -9,13 +9,17 @@ jest.mock('@reach/router', () => ({
   navigate: jest.fn(),
 }));
 
-test('should login', async () => {
-  useLazyAxios.mockReturnValue([
-    jest.fn(),
-    { data: {}, error: null, loading: false },
-  ]);
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
-  const { getByLabelText, getByText } = render(<Register />);
+test('should register', async () => {
+  useLazyAxios
+    .mockReturnValueOnce([jest.fn(), { loading: false }])
+    .mockReturnValueOnce([jest.fn(), { loading: true }])
+    .mockReturnValue([jest.fn(), { data: {}, error: null, loading: false }]);
+
+  const { getByLabelText, getByTestId, getByText } = render(<Register />);
 
   const usernameInput = getByLabelText(/username:/i);
   const passwordInput = getByLabelText(/password:/i);
@@ -25,8 +29,24 @@ test('should login', async () => {
   fireEvent.change(passwordInput, { target: { value: 'Abcd1234!' } });
   fireEvent.click(submitButton);
 
+  expect(getByTestId('loading')).toBeInTheDocument();
+
   await wait(() => {
     expect(navigate).toHaveBeenCalledTimes(1);
     expect(navigate).toHaveBeenCalledWith('/');
+  });
+});
+
+test('should navigate to login page', async () => {
+  useLazyAxios.mockReturnValue([() => {}, { loading: false }]);
+
+  const { getByText } = render(<Register />);
+
+  const loginButton = getByText(/login/i);
+  fireEvent.click(loginButton);
+
+  await wait(() => {
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith('/login');
   });
 });

@@ -5,7 +5,7 @@ import { navigate } from '@reach/router';
 import { registerSchema } from '../schemas';
 
 export default function Register() {
-  const [getData, { data }] = useLazyAxios({
+  const [getData, { data, error, loading }] = useLazyAxios({
     method: 'POST',
     url: '/api/register',
   });
@@ -25,6 +25,14 @@ export default function Register() {
       navigate('/');
     }
   }, [data]);
+
+  if (loading) {
+    return <div data-testid="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div data-testid="error">Error...{error.message}</div>;
+  }
 
   return (
     <div>

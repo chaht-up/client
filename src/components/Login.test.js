@@ -13,13 +13,13 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-test.skip('should login', async () => {
-  useLazyAxios.mockReturnValue([
-    () => {},
-    { data: {}, error: null, loading: false },
-  ]);
+test('should login', async () => {
+  useLazyAxios
+    .mockReturnValueOnce([jest.fn(), { loading: false }])
+    .mockReturnValueOnce([jest.fn(), { loading: true }])
+    .mockReturnValue([jest.fn(), { data: {}, error: null, loading: false }]);
 
-  const { getByLabelText, getByText } = render(<Login />);
+  const { getByLabelText, getByTestId, getByText } = render(<Login />);
 
   const usernameInput = getByLabelText(/username:/i);
   const passwordInput = getByLabelText(/password:/i);
@@ -29,6 +29,8 @@ test.skip('should login', async () => {
   fireEvent.change(passwordInput, { target: { value: 'Abcd1234!' } });
   fireEvent.click(submitButton);
 
+  expect(getByTestId('loading')).toBeInTheDocument();
+
   await wait(() => {
     expect(navigate).toHaveBeenCalledTimes(1);
     expect(navigate).toHaveBeenCalledWith('/');
@@ -36,10 +38,7 @@ test.skip('should login', async () => {
 });
 
 test('should navigate to register page', async () => {
-  useLazyAxios.mockReturnValue([
-    () => {},
-    { data: null, error: null, loading: false },
-  ]);
+  useLazyAxios.mockReturnValue([() => {}, { loading: false }]);
 
   const { getByText } = render(<Login />);
 
