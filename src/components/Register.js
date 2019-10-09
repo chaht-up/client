@@ -7,7 +7,8 @@ import { registerSchema } from '../schemas';
 export default function Register() {
   const [getData, { data, error, loading }] = useLazyAxios({
     method: 'POST',
-    url: '/api/register',
+    url: '/api/users',
+    headers: { 'content-type': 'application/json' },
   });
 
   const { handleChange, handleSubmit, values } = useFormik({

@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import 'dotenv/config';
-import ChatInput from './ChatInput';
-import Messages from './Messages';
+import React, { useContext, useEffect } from 'react';
+import { navigate, Router } from '@reach/router';
+import { useAxios } from 'use-axios-client';
+import { AuthContext } from '../contexts/Authentication';
+import { Chat, Login, NotFound, Register } from '.';
 
-function App() {
-  const [messages, setMessages] = useState([]);
-  const [user, setUser] = useState({});
+export default function App() {
+  const { setUser } = useContext(AuthContext);
 
-  const port = process.env.REACT_APP_SERVER_PORT;
-  const socket = io(`http://localhost:${port}`);
+  const { data, error, loading } = useAxios('/api/sessions');
 
   useEffect(() => {
-    socket.emit('app:load', ({ messages: messageData, users: userData }) => {
-      setMessages(messages => [...messages, ...messageData]);
-      setUser(userData);
-    });
-    socket.on('message:new', newMessage => {
-      setMessages(messages => [...messages, newMessage]);
-    });
-  }, []);
+    const { pathname } = window.location;
+    if (data) {
+      setUser(data);
+      navigate(
+        pathname === '/login' || pathname === '/register' ? '/' : pathname,
+      );
+    } else if (error) {
+      const path = pathname === '/' ? '/login' : pathname;
+      navigate(path);
+    }
+  }, [data, error, setUser]);
 
-  const postMessage = input => {
-    socket.emit('message:post', input);
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="App">
-      <Messages messages={messages} />
-      <ChatInput postMessage={postMessage} />
-    </div>
+    <Router>
+      <Chat path="/" />
+      <Login path="/login" />
+      <Register path="/register" />
+      <NotFound default />
+    </Router>
   );
 }
-
-export default App;

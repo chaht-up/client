@@ -1,7 +1,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { fireEvent, render } from '@testing-library/react';
-import App from './App';
+import Chat from './Chat';
 
 jest.mock('socket.io-client');
 
@@ -38,7 +38,7 @@ test('should send new message', async () => {
     }),
   }));
 
-  const { getByLabelText, getByText } = render(<App />);
+  const { getByLabelText, getByText } = render(<Chat />);
 
   expect(getByText(existingMessage)).toBeInTheDocument();
 

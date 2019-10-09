@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useLazyAxios } from 'use-axios-client';
 import { navigate } from '@reach/router';
+import { AuthContext } from '../contexts/Authentication';
 import { loginSchema } from '../schemas';
 
 export default function Login() {
+  const { setUser } = useContext(AuthContext);
+
   const [getData, { data, error, loading }] = useLazyAxios({
     method: 'POST',
-    url: '/api/login',
+    url: '/api/sessions',
     headers: { 'content-type': 'application/json' },
   });
 
@@ -23,9 +26,10 @@ export default function Login() {
 
   useEffect(() => {
     if (data) {
+      setUser(data);
       navigate('/');
     }
-  }, [data]);
+  }, [data, setUser]);
 
   if (loading) {
     return <div data-testid="loading">Loading...</div>;
