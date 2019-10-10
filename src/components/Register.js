@@ -23,7 +23,7 @@ export default function Register() {
 
   useEffect(() => {
     if (data) {
-      navigate('/');
+      navigate('/login');
     }
   }, [data]);
 

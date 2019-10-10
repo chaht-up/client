@@ -28,6 +28,12 @@ export default function Chat() {
     });
   }, []);
 
+  useEffect(() => {
+    socket.on('user:new', newUser => {
+      setUsers(users => ({ ...users, newUser }));
+    });
+  }, []);
+
   const postMessage = input => {
     socket.emit('message:post', input);
   };
