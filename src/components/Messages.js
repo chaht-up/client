@@ -1,13 +1,8 @@
 import React from 'react';
+import Message from './Message';
 
-export default function Messages({ messages, users }) {
-  return (
-    <div>
-      {messages.map(({ id, senderId, text }) => (
-        <div key={id}>
-          {users[senderId].username}: {text}
-        </div>
-      ))}
-    </div>
-  );
+export default function Messages({ messages, getUser, users }) {
+  return messages.map((message) => (
+    <Message key={message.id} message={message} getUser={getUser} user={users[message.senderId]} />
+  ));
 }

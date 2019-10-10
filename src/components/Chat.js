@@ -13,11 +13,44 @@ export default function Chat() {
   const port = process.env.REACT_APP_SERVER_PORT;
   const socket = io(`http://localhost:${port}`);
 
+  const getUser = (() => {
+    // keep track of in flight requests so we don't bombard the server
+    const inFlightRequests = new Set();
+
+    return async (id) => {
+      // if we find the user, don't make any requests
+      if (users[id]) return users[id];
+
+      // if we find this request is inflight, don't make another request (shitty debounce)
+      if (inFlightRequests.has(id)) return;
+      // keep track of this for future messages that may be missing the same user
+      inFlightRequests.add(id);
+
+      try {
+        const response = await fetch(`/api/users/${id}`);
+        const user = await response.json();
+
+        // remove initial setting of users in state and add this fake latency to
+        // see the messages in a "loading" state
+        // await new Promise((resolve) => setTimeout(resolve, 5000))
+
+        // add the user to state when it's found
+        setUsers({ ...users, [id]: user });
+      } catch (e) {
+        // gracefully handle any errors, probably notify user something went horribly wrong
+        console.error(e);
+      } finally {
+        // make sure to clear out id after request completes
+        inFlightRequests.delete(id);
+      }
+    }
+  })();
+
   useEffect(() => {
     socket.emit('app:load', ({ messages: messageData, users: usersData }) => {
       setLoading(true);
       setMessages(messages => [...messages, ...messageData]);
-      setUsers(usersData);
+      // setUsers(usersData);
       setLoading(false);
     });
   }, []);
@@ -38,7 +71,7 @@ export default function Chat() {
 
   return (
     <div className="App">
-      <Messages messages={messages} users={users} />
+      <Messages messages={messages} getUser={getUser} users={users} />
       <ChatInput postMessage={postMessage} />
       <Logout />
     </div>
