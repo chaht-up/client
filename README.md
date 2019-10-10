@@ -19,7 +19,6 @@ Web app for chatting
 
 ### Dev Tooling
 
-- [cypress](https://github.com/cypress-io/cypress) - e2e browser testing suite
 - [eslint](https://eslint.org/) - JS linter
 
 ### Build Tooling
@@ -30,6 +29,7 @@ Web app for chatting
 
 ### Test Tooling
 
+- [cypress](https://github.com/cypress-io/cypress) - e2e browser testing suite
 - [jest](https://facebook.github.io/jest/) - Unit test suite
 
 ### Deployment
