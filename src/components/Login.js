@@ -19,7 +19,6 @@ export default function Login() {
       username: '',
       password: '',
     },
-
     onSubmit: () => getData(values),
     validationSchema: loginSchema,
   });

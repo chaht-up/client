@@ -16,14 +16,13 @@ export default function Register() {
       username: '',
       password: '',
     },
-
     onSubmit: () => getData(values),
     validationSchema: registerSchema,
   });
 
   useEffect(() => {
     if (data) {
-      navigate('/login');
+      navigate('/');
     }
   }, [data]);
 
