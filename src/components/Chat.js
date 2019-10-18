@@ -25,8 +25,8 @@ export default function Chat() {
       setMessages(messages => [...messages, newMessage]);
     });
 
-    socket.on('user:new', newUser => {
-      setUsers(users => ({ ...users, newUser }));
+    socket.on('user:update', newUser => {
+      setUsers(users => ({ ...users, ...newUser }));
     });
   }, [socket]);
 
