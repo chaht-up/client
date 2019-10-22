@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import 'dotenv/config';
 import ChatInput from './ChatInput';
@@ -12,13 +12,15 @@ export default function Chat() {
 
   const port = process.env.REACT_APP_SERVER_PORT;
   const socket = useCallback(io(`http://localhost:${port}`), []);
+  const isMounted = useRef(true);
 
   useEffect(() => {
     socket.emit('app:load', ({ messages: messageData, users: usersData }) => {
-      setLoading(true);
-      setMessages(messages => [...messages, ...messageData]);
-      setUsers(usersData);
-      setLoading(false);
+      if (isMounted.current) {
+        setMessages(messages => [...messages, ...messageData]);
+        setUsers(usersData);
+        setLoading(false);
+      }
     });
 
     socket.on('message:new', newMessage => {
@@ -28,6 +30,12 @@ export default function Chat() {
     socket.on('user:update', newUser => {
       setUsers(users => ({ ...users, ...newUser }));
     });
+
+    return () => {
+      socket.off('message:new');
+      socket.off('user:update');
+      isMounted.current = false;
+    };
   }, [socket]);
 
   const postMessage = input => {
